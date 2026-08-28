@@ -46,11 +46,11 @@ _asm_main:
         ; TODO: put your Fahrenheit value in eax here
         ; C * 9
         mov     eax, esi
-        mov     edx, 9
-        mul     edx
+        mov     ebx, 9
+        mul     ebx
         ; / 5
+        mov     edx, 0
         mov     ebx, 5
-        xor     edx, edx
         div     ebx
         ; + 32
         add     eax, 32
@@ -74,11 +74,11 @@ _asm_main:
         mov     eax, edi
         sub     eax, 32
         ; * 5
-        mov     edx, 5
-        mul     edx
+        mov     ebx, 5
+        mul     ebx
         ; / 9
+        mov     edx, 0
         mov     ebx, 9
-        xor     edx, edx
         div     ebx
         ; - 273
         add     eax, 273
