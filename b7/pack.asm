@@ -69,13 +69,22 @@ _asm_main:
         ; A constant cannot be the destination of a mov, so the line without
         ; brackets does not assemble.
         ;
+
+        ; masking
+        ; keep only 4 bits
         and     esi, 0x0F
+        ; keep only 1 bits
         and     edi, 0x01
+        ; keep only 8 bits
         and     ecx, 0xFF
 
+        ; shift left 12 bits
         shl     esi, 12
+        ; shift left 8 bits
         shl     edi, 8
+        ; no need to shift ecx
 
+        ; combine values into packed
         mov     eax, esi
         or      eax, edi
         or      eax, ecx
@@ -96,17 +105,19 @@ _asm_main:
         ; Shift a field down to the bottom first. Then mask it to its width.
         ; The other order works only when the mask matches the field position.
         ;
-        mov     eax, [packed]
 
-        mov     ebx, eax
+        ; extract version
+        mov     ebx, [packed]
         shr     ebx, 12
         and     ebx, 0x0F
 
-        mov     ecx, eax
+        ; extract flag
+        mov     ecx, [packed]
         shr     ecx, 8
         and     ecx, 0x01
 
-        mov     edx, eax
+        ; extract length
+        mov     edx, [packed]
         and     edx, 0xFF
 
         mov     eax, uv_msg
