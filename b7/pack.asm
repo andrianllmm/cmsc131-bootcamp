@@ -69,10 +69,23 @@ _asm_main:
         ; A constant cannot be the destination of a mov, so the line without
         ; brackets does not assemble.
         ;
+        and     esi, 0x0F
+        and     edi, 0x01
+        and     ecx, 0xFF
+
+        shl     esi, 12
+        shl     edi, 8
+
+        mov     eax, esi
+        or      eax, edi
+        or      eax, ecx
+        mov     [packed], eax
 
         mov     eax, packed_msg
         call    print_string
         ; TODO: print the packed value. Read it back from memory with [packed].
+        mov     eax, [packed]
+        call    print_int
         call    print_nl
 
         ;
@@ -83,20 +96,38 @@ _asm_main:
         ; Shift a field down to the bottom first. Then mask it to its width.
         ; The other order works only when the mask matches the field position.
         ;
+        mov     eax, [packed]
+
+        mov     ebx, eax
+        shr     ebx, 12
+        and     ebx, 0x0F
+
+        mov     ecx, eax
+        shr     ecx, 8
+        and     ecx, 0x01
+
+        mov     edx, eax
+        and     edx, 0xFF
 
         mov     eax, uv_msg
         call    print_string
         ; TODO: version
+        mov     eax, ebx
+        call    print_int
         call    print_nl
 
         mov     eax, uf_msg
         call    print_string
         ; TODO: flag
+        mov     eax, ecx
+        call    print_int
         call    print_nl
 
         mov     eax, ul_msg
         call    print_string
         ; TODO: length
+        mov     eax, edx
+        call    print_int
         call    print_nl
 
         ;
